@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.questionmanager.PrimaryController">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="321.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.questionmanager.PrimaryController">
    <children>
-      <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
+      <TextField fx:id="questionTxt" layoutX="101.0" layoutY="122.0" prefHeight="25.0" prefWidth="466.0" />
+      <Label layoutX="28.0" layoutY="122.0" text="Question">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="29.0" layoutY="175.0" text="Choice A">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="312.0" layoutY="175.0" text="Choice B">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="choiceA" layoutX="101.0" layoutY="175.0" prefHeight="25.0" prefWidth="181.0" />
+      <TextField fx:id="choiceB" layoutX="382.0" layoutY="175.0" prefHeight="25.0" prefWidth="187.0" />
+      <Button layoutX="251.0" layoutY="243.0" mnemonicParsing="false" text="Add Survey">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Label layoutX="193.0" layoutY="39.0" text="Add Survey Questions">
+         <font>
+            <Font name="Bell MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="outputMsg" layoutX="285.0" layoutY="86.0" text="Label" />
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</VBox>
+</Pane>
