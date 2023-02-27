@@ -1,39 +1,55 @@
 package com.example.test;
 
 public class Question {
+    int question_id;
+    private String question_name;
+    private String opt_a;
+    private String opt_b;
+    private String opt_c;
+    private String opt_d;
 
-    private String question;
-    private String answer1;
-    private String answer2;
-    private String answer3;
-    private String answer4;
-
-    public Question(String question, String answer1, String answer2, String answer3, String answer4) {
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
+    public Question(int question_id,String question_name, String opt_a, String opt_b, String opt_c, String opt_d) {
+        this.question_name = question_name;
+        this.opt_a = opt_a;
+        this.opt_b = opt_b;
+        this.opt_c = opt_c;
+        this.opt_d = opt_d;
+        this.question_id = question_id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getQuestion_name() {
+        return question_name;
     }
 
-    public String getAnswer1() {
-        return answer1;
+    public String getOpt_a() {
+        return opt_a;
     }
 
-    public String getAnswer2() {
-        return answer2;
+    public String getOpt_b() {
+        return opt_b;
     }
 
-    public String getAnswer3() {
-        return answer3;
+    public String getOpt_c() {
+        return opt_c;
     }
 
-    public String getAnswer4() {
-        return answer4;
+    public String getOpt_d() {
+        return opt_d;
     }
+    public int getQuestion_id() {
+        return question_id;
+    }
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question_id=" + question_id +
+                ", question_name='" + question_name + '\'' +
+                ", opt_a='" + opt_a + '\'' +
+                ", opt_b='" + opt_b + '\'' +
+                ", opt_c='" + opt_c + '\'' +
+                ", opt_d='" + opt_d + '\'' +
+                '}';
+    }
+
 }
 

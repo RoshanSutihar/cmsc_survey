@@ -1,8 +1,15 @@
 package com.example.test;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -12,31 +19,83 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
     Button sendData;
     private Gson gson;
     TextView message;
+    Question [] question = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // create sample data
-        ArrayList<Question> questions = new ArrayList<>();
-        questions.add(new Question("What is your name?", "Roshan", "Ram", "Shyam", "Hari"));
-        questions.add(new Question("What is your name?", "Ram", "Ram", "Shyam", "Hari"));
+//        ArrayList<Question> questions = new ArrayList<>();
+//       questions.add(new Question("What is your name?", "Roshan", "Ram", "Shyam", "Hari"));
 
-        // create custom adapter and set to ListView
-        CustomAdapter adapter = new CustomAdapter(this, R.layout.list_item, questions);
-        listView = findViewById(R.id.list_view);
+//
+//        // create custom adapter and set to ListView
+       //CustomAdapter adapter = new CustomAdapter(this, R.layout.list_item, questions);
+      //listView = findViewById(R.id.list_view);
         sendData = findViewById(R.id.sendData);
         message = findViewById(R.id.message);
-        listView.setAdapter(adapter);
+      // listView.setAdapter(adapter);
 
         gson = new Gson();
+         new extractData().execute();
+
+
+
+    }
+
+    private class extractData extends AsyncTask<String, Void, String> {
+        private String uri;
+
+    extractData(){
+        uri="http://"+URIHandler.hostName+"/questions";
+    }
+
+
+        protected String doInBackground(String... urls) {
+            return URIHandler.doGet(uri, "");
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+
+        protected void onPostExecute(String result) {
+            loadHandles(result);
+        }
+    }
+
+
+
+    private void loadHandles(String json) {
+        gson = new Gson();
+
+        Question[] A = gson.fromJson(json,Question[].class);
+
+        List<Question> questionList = Arrays.asList(A);
+
+
+        ArrayList<Question> arrayList = new ArrayList<>(questionList);
+
+        Log.d("TAG", "List size: " + String.valueOf(arrayList.size()));
+
+       listView = findViewById(R.id.list_view);
+//
+        CustomAdapter adapter = new CustomAdapter(this, R.layout.list_item, arrayList);
+        listView.setAdapter(adapter);
 
 
         sendData.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
                             if (tag != null) {
                                 String selectedAnswer = tag.toString();
+
                                 message.setText("selected" + selectedAnswer + "\n");
+
                                 message.setTextColor(Color.parseColor("#006400"));
                                 // Do something with the selected answer
                             }
@@ -93,5 +154,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+
+
+
+
     }
 }

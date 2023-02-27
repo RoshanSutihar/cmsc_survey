@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomAdapter extends ArrayAdapter<Question> {
 
@@ -28,24 +29,24 @@ public class CustomAdapter extends ArrayAdapter<Question> {
         Question question = questions.get(position);
 
         TextView questionTextView = convertView.findViewById(R.id.question_text_view);
-        questionTextView.setText(question.getQuestion());
+        questionTextView.setText(question.getQuestion_name());
 
         RadioGroup answersRadioGroup = convertView.findViewById(R.id.answers_radio_group);
 
         RadioButton answer1RadioButton = convertView.findViewById(R.id.answer_1_radio_button);
-        answer1RadioButton.setText(question.getAnswer1());
+        answer1RadioButton.setText(question.getOpt_a());
         answer1RadioButton.setTag('a');
 
         RadioButton answer2RadioButton = convertView.findViewById(R.id.answer_2_radio_button);
-        answer2RadioButton.setText(question.getAnswer2());
+        answer2RadioButton.setText(question.getOpt_b());
         answer2RadioButton.setTag('b');
 
         RadioButton answer3RadioButton = convertView.findViewById(R.id.answer_3_radio_button);
-        answer3RadioButton.setText(question.getAnswer3());
+        answer3RadioButton.setText(question.getOpt_c());
         answer3RadioButton.setTag('c');
 
         RadioButton answer4RadioButton = convertView.findViewById(R.id.answer_4_radio_button);
-        answer4RadioButton.setText(question.getAnswer4());
+        answer4RadioButton.setText(question.getOpt_d());
         answer4RadioButton.setTag('d');
         return convertView;
     }
