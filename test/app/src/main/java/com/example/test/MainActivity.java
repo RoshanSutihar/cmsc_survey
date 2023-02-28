@@ -1,6 +1,7 @@
 package com.example.test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -40,20 +41,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // create sample data
-//        ArrayList<Question> questions = new ArrayList<>();
-//       questions.add(new Question("What is your name?", "Roshan", "Ram", "Shyam", "Hari"));
 
-//
-//        // create custom adapter and set to ListView
-       //CustomAdapter adapter = new CustomAdapter(this, R.layout.list_item, questions);
-      //listView = findViewById(R.id.list_view);
         sendData = findViewById(R.id.sendData);
         message = findViewById(R.id.message);
-      // listView.setAdapter(adapter);
 
         gson = new Gson();
-         new extractData().execute();
+        new extractData().execute();
 
 
 
@@ -125,9 +118,8 @@ public class MainActivity extends AppCompatActivity {
                         View itemView = listView.getChildAt(i);
 
                         RadioGroup answersRadioGroup = itemView.findViewById(R.id.answers_radio_group);
-
                         int checkedRadioButtonId = answersRadioGroup.getCheckedRadioButtonId();
-
+                        int question_id = i+1;
                         if (checkedRadioButtonId != -1) {
                             RadioButton checkedRadioButton = itemView.findViewById(checkedRadioButtonId);
 
@@ -136,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             if (tag != null) {
                                 String selectedAnswer = tag.toString();
 
+                                new NewUserTask(selectedAnswer, question_id).execute();
                                 message.setText("selected" + selectedAnswer + "\n");
 
                                 message.setTextColor(Color.parseColor("#006400"));
@@ -155,9 +148,36 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private class NewUserTask extends AsyncTask<String, Void, String> {
+        private String uri;
+        private String response;
+        private int question_id;
+
+        NewUserTask(String response, int question_id) {
+            uri = "http://" + URIHandler.hostName + "/responses";
+            this.question_id = question_id;
+            this.response = response;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return URIHandler.doPost(uri, "{\"question_id\":\"" + question_id + "\",\"response\":\"" + response + "\"}");
+        }
 
 
 
-
+        @Override
+        protected void onPostExecute(String result) {
+            if(result.isEmpty())
+                message.setText("Wasn't completes");
+            else {
+                message.setText("Data send sucessfull");
+                Intent intent = new Intent(MainActivity.this, display.class);
+                startActivity(intent);
+            }
+        }
     }
 }

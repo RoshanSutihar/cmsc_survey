@@ -14,7 +14,7 @@ import java.util.List;
 public class CustomAdapter extends ArrayAdapter<Question> {
 
     private ArrayList<Question> questions;
-
+private int question_id;
     public CustomAdapter(Context context, int resource, ArrayList<Question> questions) {
         super(context, resource, questions);
         this.questions = questions;
@@ -27,10 +27,11 @@ public class CustomAdapter extends ArrayAdapter<Question> {
         }
 
         Question question = questions.get(position);
+        int questionId = question.question_id;
 
         TextView questionTextView = convertView.findViewById(R.id.question_text_view);
         questionTextView.setText(question.getQuestion_name());
-
+        questionTextView.setTag(questionId);
         RadioGroup answersRadioGroup = convertView.findViewById(R.id.answers_radio_group);
 
         RadioButton answer1RadioButton = convertView.findViewById(R.id.answer_1_radio_button);
