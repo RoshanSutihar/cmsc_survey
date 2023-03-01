@@ -26,6 +26,8 @@ public class DisplayAdapter extends ArrayAdapter<Option> {
 
         TextView optionTextView = convertView.findViewById(R.id.option_text);
         optionTextView.setText(option.getOpt_name());
+        TextView optional_text = convertView.findViewById(R.id.option_text);
+        optional_text.setText(option.getOpt_name());
 
         TextView sumTextView = convertView.findViewById(R.id.votes_text);
         sumTextView.setText(String.valueOf(option.getValue()));

@@ -2,12 +2,12 @@ package com.example.test;
 
 public class Option {
     private String opt_name;
-    private int Value;
+    private int vote;
     public Option(){}
 
-    public Option(String opt_name, int value) {
-        this.opt_name = opt_name;
-        this.Value = value;
+    public Option(String opt_name, int vote) {
+    this.opt_name =opt_name;
+        this.vote = vote;
     }
 
     public String getOpt_name() {
@@ -15,7 +15,7 @@ public class Option {
     }
 
     public int getValue() {
-        return Value;
+        return vote;
     }
 
     public void setOpt_name(String opt_name) {
@@ -23,6 +23,12 @@ public class Option {
     }
 
     public void setValue(int value) {
-        Value = value;
+        vote = value;
+    }
+
+
+    @Override
+    public String toString() {
+        return opt_name;
     }
 }

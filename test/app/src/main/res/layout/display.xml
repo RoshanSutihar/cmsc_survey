@@ -10,7 +10,7 @@
         android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Here are the total no of votes today:"
+        android:text="Here are the total votes today for each options:"
         android:textSize="20sp" />
 
     <ListView

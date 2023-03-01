@@ -36,7 +36,13 @@ public class MainActivity extends AppCompatActivity {
     Button sendData;
     private Gson gson;
     TextView message;
-    Question [] question = null;
+    String passQ;
+    String passC;
+    String passA;
+    String passB;
+    String passD;
+    int questionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,28 +120,43 @@ public class MainActivity extends AppCompatActivity {
 
                 // If all radio buttons are selected, get the selected answer for each question
                 if (allSelected) {
-                    for (int i = 0; i < listView.getAdapter().getCount(); i++) {
-                        View itemView = listView.getChildAt(i);
+                    // Assuming the question object array is called questionArray and contains a list of questions
+                    int questionIndex = 0; // Replace this with the index of the question you want to display
+                    Question question = arrayList.get(questionIndex);
 
-                        RadioGroup answersRadioGroup = itemView.findViewById(R.id.answers_radio_group);
-                        int checkedRadioButtonId = answersRadioGroup.getCheckedRadioButtonId();
-                        int question_id = i+1;
-                        if (checkedRadioButtonId != -1) {
-                            RadioButton checkedRadioButton = itemView.findViewById(checkedRadioButtonId);
+                    View itemView = listView.getChildAt(questionIndex);
 
-                            Object tag = checkedRadioButton.getTag();
+                    RadioGroup answersRadioGroup = itemView.findViewById(R.id.answers_radio_group);
+                    int checkedRadioButtonId = answersRadioGroup.getCheckedRadioButtonId();
+                    questionId = question.getQuestion_id();
+                    Log.d(String.valueOf(questionId), "onClick: ");
+                     passQ= question.getQuestion_name();
+                    Log.d(passQ, "question ");
+                     passA = question.getOpt_a();
+                    Log.d(passA, "ans ");
+                     passB = question.getOpt_b();
+                    passC = question.getOpt_c();
+                    passD = question.getOpt_d();
+                    if (checkedRadioButtonId != -1) {
+                        RadioButton checkedRadioButton = itemView.findViewById(checkedRadioButtonId);
 
-                            if (tag != null) {
-                                String selectedAnswer = tag.toString();
+                        Object tag = checkedRadioButton.getTag();
 
-                                new NewUserTask(selectedAnswer, question_id).execute();
-                                message.setText("selected" + selectedAnswer + "\n");
+                        if (tag != null) {
+                            String selectedAnswer = tag.toString();
 
-                                message.setTextColor(Color.parseColor("#006400"));
-                                // Do something with the selected answer
-                            }
+                            new NewUserTask(selectedAnswer).execute();
+                            message.setText("selected" + selectedAnswer + "\n");
+
+                            message.setTextColor(Color.parseColor("#006400"));
+                            // Do something with the selected answer
                         }
+                    } else {
+                        message.setText("Every questions must be answered!");
+                        message.setTextColor(Color.parseColor("#FF0000"));
+                        // Show error message that all questions need to be answered
                     }
+
                 } else {
                     message.setText("Every questions must be answred!");
                     message.setTextColor(Color.parseColor("#FF0000"));
@@ -153,18 +174,18 @@ public class MainActivity extends AppCompatActivity {
     private class NewUserTask extends AsyncTask<String, Void, String> {
         private String uri;
         private String response;
-        private int question_id;
+        
 
-        NewUserTask(String response, int question_id) {
+        NewUserTask(String response) {
             uri = "http://" + URIHandler.hostName + "/responses";
-            this.question_id = question_id;
+
             this.response = response;
         }
 
         @Override
         protected String doInBackground(String... urls) {
 
-            return URIHandler.doPost(uri, "{\"question_id\":\"" + question_id + "\",\"response\":\"" + response + "\"}");
+            return URIHandler.doPost(uri, "{\"question_id\":\"" + questionId+ "\",\"response\":\"" + response + "\"}");
         }
 
 
@@ -176,7 +197,15 @@ public class MainActivity extends AppCompatActivity {
             else {
                 message.setText("Data send sucessfull");
                 Intent intent = new Intent(MainActivity.this, display.class);
+                intent.putExtra("id", String.valueOf(questionId));
+                intent.putExtra("qname", passQ);
+                intent.putExtra("a", passA);
+                intent.putExtra("b", passB);
+                intent.putExtra("c", passC);
+                intent.putExtra("d", passD);
+                Log.d("MainActivity", "Starting display activity with intent: " + intent.toString());
                 startActivity(intent);
+
             }
         }
     }
